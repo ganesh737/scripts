@@ -27,6 +27,7 @@ function format_partition {
     local _device_partition=$1
     local _format_type=$2
     local _label=$3
+    local _options=$4
     local _label_cmd=""
     # TODO: some error handling on
     # * empty parameters
@@ -36,16 +37,21 @@ function format_partition {
         print_info "Applying label along with format"
         if [ "$_format_type" == "vfat" ] ; then
             print_debug "detected labelling of vfat partition"
-            _label_cmd="-n $_label"
+            _label_cmd="-n$_label"
         elif [ "$_format_type" == "ext4" ] ; then
             print_debug "detected labelling of ext4 partition"
-            _label_cmd="-L $_label"
+            _label_cmd="-L$_label"
         else
             print_error "unknown partition type for labelling. not applying any label"
         fi
     fi
 
-    print_debug "format_partition:sudo mkfs.$_format_type $_device_partition $_label_cmd"
-    sudo mkfs."$_format_type" "$_device_partition" "$_label_cmd"
+    if [ -z "$_options" ] ; then
+        print_debug "format_partition:sudo mkfs.$_format_type $_device_partition $_label_cmd"
+        sudo mkfs."$_format_type" "$_device_partition" "$_label_cmd"
+    else
+        print_debug "format_partition:sudo mkfs.$_format_type $_device_partition $_label_cmd $_options"
+        sudo mkfs."$_format_type" "$_device_partition" "$_label_cmd" "$_options"
+    fi
     check_result $?
 }

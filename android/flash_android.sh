@@ -9,19 +9,16 @@ function create_boot {
     print_info "create_boot"
     fdisk_create_partition $FLASH_DRIVE +512M p a
     fdisk_update_partition_type_code $FLASH_DRIVE c
-    fdisk_check_partition_creation $?
 }
 
 function create_system {
     print_info "create_system"
     fdisk_create_partition $FLASH_DRIVE +512M
-    fdisk_check_partition_creation $?
 }
 
 function create_cache {
     print_info "create_cache"
     fdisk_create_partition $FLASH_DRIVE +512M
-    fdisk_check_partition_creation $?
 }
 
 function create_userdata {
@@ -90,6 +87,11 @@ function update_contents {
     fdisk_print_partition_info "$FLASH_DRIVE"
 }
 
+#Main
+
+if [ "x${1}" == "x" ] ; then
+    trc_err_exit_and_restore "No options provided"
+fi
 
 for i in $@
 do

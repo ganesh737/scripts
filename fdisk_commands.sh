@@ -59,6 +59,7 @@ function fdisk_create_partition {
     fi
     print_debug "echo -e \"n\\n${_partition_type}\\n\\n\\n${_size}\\n${_enable_bootflag}w\\n\" | sudo fdisk -u $_device"
     echo -e "n\n${_partition_type}\n\n\n${_size}\n${_enable_bootflag}w\n" | sudo fdisk -u $_device
+    fdisk_check_partition_creation $?
 }
 
 
@@ -68,4 +69,5 @@ function fdisk_update_partition_type_code {
     local _partition_type_code=$2
     print_debug "echo -e \"t\\n${_partition_type_code}\\nw\\n\" \| sudo fdisk -u $_device"
     echo -e "t\n${_partition_type_code}\nw\n" | sudo fdisk -u $_device
+    check_result $?
 }

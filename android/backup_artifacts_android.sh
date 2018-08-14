@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../common/functions.sh
+source ../all_helpers.sh
 
 function copy_boot_contents {
     echo "Copying BOOT partition contents"
