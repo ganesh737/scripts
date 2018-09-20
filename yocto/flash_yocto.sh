@@ -5,6 +5,15 @@ source ~/src/scripts/all_helpers.sh
 RPI3_TMP_DIR="$HOME/src/rpi3/tmp/"
 CREATE_PARTITIONS_OPTIONS=""
 
+function usage {
+    echo "Available options -"
+    echo "--dir=        : backedup content folder"
+    echo "--drive=      : memory device to be flashed"
+    echo "--erase=      : erase the memory device before flashing"
+    echo "                by default it only creates a empty partition table"
+    echo "--debug       : generate debugging logs"
+}
+
 function create_boot_partition {
     print_info "create_boot_partition"
     fdisk_create_partition $FLASH_DRIVE +64M p a
@@ -50,10 +59,11 @@ function update_rfs {
 #Main
 
 if [ "x${1}" == "x" ] ; then
+    usage
     trc_err_exit_and_restore "No options provided"
 fi
 
-for i in $@
+for i in "$@"
 do
     case $i in
         --dir=*)
@@ -71,6 +81,7 @@ do
             DEBUG="TRUE"
             ;;
         *)
+            usage
             trc_err_exit_and_restore "Could not understand the option $i"
             ;;
     esac

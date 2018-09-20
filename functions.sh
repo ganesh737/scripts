@@ -31,7 +31,7 @@ function check_if_android_release {
 
 function check_host_partition {
     print_info "check_host_partition"
-    print_debug "Checking for partition $@"
+    print_debug "Checking for partition $*"
     if [ "$@" == "/dev/sda" ] || [ "$@" == "/dev/sdb" ] || [ "$@" == "/dev/sdc" ] || [ "$@" == "/dev/sdd" ] ; then
         trc_err_exit_and_restore "Trying to use host machine\'s device"
     fi
